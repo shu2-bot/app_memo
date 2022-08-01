@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Django memo</title>
+</head>
+<body>
+    <div>
+        <h2>{{ memo.title }} by {{ memo.created_by.username }}</h2>
+        <small>投稿日：{{ memo.created_at }}</small>
+        <p>{{ memo.description }}</p>
+    </div>
+</body>
+</html>

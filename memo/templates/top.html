@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block main %}
+    
+    <div class="welcome">
+        <h1>ようこそ、メモ帳</h1>
+        <p>あなたのメモを共有しよう</p>
+        <a class="btn btn-primary" href="{% url 'memo_new' %}">メモを作成する</a>
+    </div>
+
+    {% if memos %}
+    <table class="table">
+        <thead>
+            <tr>投稿者</tr>
+            <tr>投稿日</tr>
+            <tr>タイトル</tr>
+        </thead>
+        <tbody>
+            {% for memo in memos %}
+            <tr>
+                <th>{{ memo.created_by.username }}</th>
+                <th>{{ memo.created_at }}</th>
+                <th><a href="{% url 'memo_detail' memo.id %}">{{ memo.title }}</a></th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>メモ未投稿</p>
+    {% endif %}
+    
+{% endblock %}
