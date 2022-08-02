@@ -5,7 +5,7 @@ from django.conf import settings
 class Memo(models.Model):
     title = models.CharField('タイトル', max_length=128)
     #code = models.TextField('コード', blank=True)
-    description = models.TextField('説明', blank=True)
+    description = models.TextField('説明', blank=True, null=False, default='')
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name='投稿者',
@@ -13,6 +13,9 @@ class Memo(models.Model):
         )
     created_at = models.DateTimeField('投稿日', auto_now_add=True)
     updated_at = models.DateTimeField('更新日', auto_now=True)
+
+    class Meta:
+        db_table = 'db_memo'
 
     def __str__(self):
         return self.title

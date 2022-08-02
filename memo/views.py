@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
+from matplotlib.pyplot import get
 from memo.models import Memo
 from django.contrib.auth.decorators import login_required
 from memo.forms import MemoForm
@@ -39,6 +40,14 @@ def memo_edit(request, memo_id):
     return render(request, 'memo_edit.html', {"form":form})
 
 def memo_detail(request, memo_id):
+    """
     memo = get_object_or_404(Memo, pk=memo_id)
     context = {"memo":memo}
+    """
+    try:
+        memo = Memo.objects.get(id=memo_id)
+        context = {"memo":memo}
+    except Memo.DoesNotExist:
+        return HttpResponseNotFound("Memo is not found!!")
+
     return render(request, "memo_detail.html", context)
