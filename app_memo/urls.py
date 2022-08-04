@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 
-from memo.views import top
+#from memo.views import top
 
 urlpatterns = [
     path('admin/', admin.site.urls),
