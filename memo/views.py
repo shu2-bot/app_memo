@@ -4,12 +4,14 @@ from matplotlib.pyplot import get
 from memo.models import Memo
 from django.contrib.auth.decorators import login_required
 from memo.forms import MemoForm
+from django.views.decorators.http import require_GET, require_POST
 
 # Create your views here.
 def top(request):
     memos = Memo.objects.all()
     context = {"memos": memos}
     return render(request, "top.html", context)
+
 
 @login_required
 def memo_new(request):
@@ -24,6 +26,7 @@ def memo_new(request):
         form = MemoForm()
     return render(request, "memo_new.html", {"form":form})
 
+@require_GET
 @login_required
 def memo_edit(request, memo_id):
     memo = get_object_or_404(Memo, pk=memo_id)
