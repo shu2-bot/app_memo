@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'memo.apps.MemoConfig',
     'django_bootstrap5',
     'accounts.apps.AccountsConfig',
+    'django_extensions',
 ]
 
 LOGIN_URL = 'accounts/login/'
