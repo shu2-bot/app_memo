@@ -7,11 +7,11 @@ from memo.forms import MemoForm
 from django.views.decorators.http import require_GET, require_POST
 
 # Create your views here.
+@login_required
 def top(request):
     memos = Memo.objects.all()
     context = {"memos": memos}
     return render(request, "top.html", context)
-
 
 @login_required
 def memo_new(request):
@@ -21,12 +21,11 @@ def memo_new(request):
             memo = form.save(commit=False)
             memo.created_by = request.user
             memo.save()
-            return redirect(memo_detail, memo_id = memo.pk)
+            return redirect(memo_detail, memo_id = memo.id)
     else:
         form = MemoForm()
     return render(request, "memo_new.html", {"form":form})
 
-@require_GET
 @login_required
 def memo_edit(request, memo_id):
     memo = get_object_or_404(Memo, pk=memo_id)
@@ -42,6 +41,8 @@ def memo_edit(request, memo_id):
         form = MemoForm(instance=memo)
     return render(request, 'memo_edit.html', {"form":form})
 
+@require_GET
+@login_required
 def memo_detail(request, memo_id):
     """
     memo = get_object_or_404(Memo, pk=memo_id)
@@ -52,5 +53,4 @@ def memo_detail(request, memo_id):
         context = {"memo":memo}
     except Memo.DoesNotExist:
         return HttpResponseNotFound("Memo is not found!!")
-
     return render(request, "memo_detail.html", context)
