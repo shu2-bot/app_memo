@@ -1,3 +1,4 @@
+from cgitb import handler
 from django.urls import URLPattern, path
 
 from memo import views
@@ -8,3 +9,5 @@ urlpatterns = [
     path("<int:memo_id>/edit/", views.memo_edit, name = "memo_edit"),
     path("<int:memo_id>/", views.memo_detail, name = "memo_detail"),
 ]
+
+handler404 = 'memo.views.handlar404'

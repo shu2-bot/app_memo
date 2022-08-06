@@ -1,10 +1,12 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
+from django.http import Http404
 from matplotlib.pyplot import get
+from numpy import quantile
 from memo.models import Memo
 from django.contrib.auth.decorators import login_required
 from memo.forms import MemoForm
 from django.views.decorators.http import require_GET, require_POST
+from urllib.parse import quote
 
 # Create your views here.
 @login_required
@@ -29,8 +31,10 @@ def memo_new(request):
 @login_required
 def memo_edit(request, memo_id):
     memo = get_object_or_404(Memo, pk=memo_id)
+    """
     if memo.created_by_id != request.user.id:
         return HttpResponseForbidden("このメモの編集は許可されていません")
+    """
 
     if request.method == 'POST':
         form = MemoForm(request.POST, instance=memo)
@@ -52,5 +56,10 @@ def memo_detail(request, memo_id):
         memo = Memo.objects.get(id=memo_id)
         context = {"memo":memo}
     except Memo.DoesNotExist:
-        return HttpResponseNotFound("Memo is not found!!")
+        #raise Http404("Memo is not found!!")
+        return handlar404(request, Http404)
     return render(request, "memo_detail.html", context)
+
+def handlar404(request, exception):
+    context = {"request_path":quote(request.path)}
+    return render(request, 'error/404.html', context, status = 404)
