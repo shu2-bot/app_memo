@@ -12,6 +12,6 @@ urlpatterns = [
     path('signup/', CreateView.as_view(
         template_name = 'signup.html',
         form_class = UserCreationForm,
-        success_url = '/'
+        success_url = '../login/'
     ), name='signup'),
 ]
